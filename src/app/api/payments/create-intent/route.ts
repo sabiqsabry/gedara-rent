@@ -1,0 +1,34 @@
+import { NextRequest, NextResponse } from "next/server"
+import { getServerSession } from "next-auth"
+import { authConfig } from "@/lib/auth"
+import { stripe } from "@/lib/stripe"
+
+export async function POST(request: NextRequest) {
+  try {
+    const session = await getServerSession(authConfig)
+    if (!session || !session.user) {
+      return NextResponse.json({ error: "Unauthorized" }, { status: 401 })
+    }
+
+    const { amount, reservationId } = await request.json()
+
+    const paymentIntent = await stripe.paymentIntents.create({
+      amount: amount * 100, // Convert to cents
+      currency: "lkr",
+      metadata: {
+        reservationId,
+        userId: session.user.id,
+      },
+    })
+
+    return NextResponse.json({
+      clientSecret: paymentIntent.client_secret,
+    })
+  } catch (error) {
+    console.error("Error creating payment intent:", error)
+    return NextResponse.json(
+      { error: "Failed to create payment intent" },
+      { status: 500 }
+    )
+  }
+}
