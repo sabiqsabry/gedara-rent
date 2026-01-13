@@ -1,4 +1,4 @@
-import { NextAuthConfig } from "next-auth"
+import NextAuth from "next-auth"
 import { PrismaAdapter } from "@auth/prisma-adapter"
 import { prisma } from "./prisma"
 import Credentials from "next-auth/providers/credentials"
@@ -7,7 +7,7 @@ import GitHub from "next-auth/providers/github"
 import bcrypt from "bcryptjs"
 import { Role } from "@prisma/client"
 
-export const authConfig = {
+export const { handlers, auth, signIn, signOut } = NextAuth({
   adapter: PrismaAdapter(prisma) as any,
   providers: [
     Credentials({
@@ -82,4 +82,4 @@ export const authConfig = {
     strategy: "jwt",
   },
   secret: process.env.NEXTAUTH_SECRET,
-} satisfies NextAuthConfig
+})
