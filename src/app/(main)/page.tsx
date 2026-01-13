@@ -11,7 +11,7 @@ export default function HomePage() {
     <div className="flex flex-col">
       {/* Hero Section */}
       <div className="relative h-[80vh] flex items-center justify-center bg-gradient-to-r from-primary/10 to-primary/5">
-        <div className="absolute inset-0 bg-[url('/hero-bg.jpg')] bg-cover bg-center opacity-20" />
+        <div className="absolute inset-0 bg-gradient-to-br from-primary/20 via-primary/10 to-primary/5" />
         <div className="relative z-10 container mx-auto px-4 text-center">
           <h1 className="text-5xl md:text-6xl font-bold text-gray-900 mb-6">
             Find your perfect stay

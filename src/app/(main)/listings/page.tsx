@@ -25,17 +25,28 @@ function ListingsContent() {
       params.set("limit", "12")
 
       const response = await fetch(`/api/listings?${params.toString()}`)
+      
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`)
+      }
+      
       const data = await response.json()
 
-      if (page === 1) {
-        setListings(data.listings)
-      } else {
-        setListings((prev) => [...prev, ...data.listings])
+      if (!data || !data.listings) {
+        throw new Error("Invalid response data")
       }
 
-      setHasMore(data.pagination.page < data.pagination.totalPages)
+      if (page === 1) {
+        setListings(data.listings || [])
+      } else {
+        setListings((prev) => [...prev, ...(data.listings || [])])
+      }
+
+      setHasMore(data.pagination?.page < data.pagination?.totalPages)
     } catch (error) {
       console.error("Error fetching listings:", error)
+      setListings([])
+      setHasMore(false)
     } finally {
       setLoading(false)
     }

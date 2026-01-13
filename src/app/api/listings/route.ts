@@ -5,6 +5,22 @@ import { auth } from "@/lib/auth"
 
 export async function GET(request: NextRequest) {
   try {
+    // Check database connection gracefully
+    try {
+      await prisma.$connect()
+    } catch (dbError) {
+      console.warn("Database connection failed:", dbError)
+      return NextResponse.json({
+        listings: [],
+        pagination: {
+          page: 1,
+          limit: 12,
+          total: 0,
+          totalPages: 0,
+        },
+      })
+    }
+
     const { searchParams } = new URL(request.url)
     const location = searchParams.get("location")
     const category = searchParams.get("category")
@@ -95,18 +111,27 @@ export async function GET(request: NextRequest) {
     ])
 
     return NextResponse.json({
-      listings,
+      listings: listings || [],
       pagination: {
         page,
         limit,
-        total,
-        totalPages: Math.ceil(total / limit),
+        total: total || 0,
+        totalPages: Math.ceil((total || 0) / limit),
       },
     })
   } catch (error) {
     console.error("Error fetching listings:", error)
     return NextResponse.json(
-      { error: "Failed to fetch listings" },
+      { 
+        listings: [],
+        pagination: {
+          page: 1,
+          limit: 12,
+          total: 0,
+          totalPages: 0,
+        },
+        error: "Failed to fetch listings" 
+      },
       { status: 500 }
     )
   }
