@@ -3,7 +3,7 @@
 import { IconType } from "react-icons"
 import { useRouter, useSearchParams } from "next/navigation"
 import { useCallback } from "react"
-import qs from "query-string"
+import { parse, stringify } from "query-string"
 
 interface CategoryBoxProps {
   icon: IconType
@@ -19,7 +19,7 @@ export function CategoryBox({ icon: Icon, label, selected }: CategoryBoxProps) {
     let currentQuery = {}
 
     if (params) {
-      currentQuery = qs.parse(params.toString())
+      currentQuery = Object.fromEntries(params.entries())
     }
 
     const updatedQuery: any = {
@@ -31,13 +31,11 @@ export function CategoryBox({ icon: Icon, label, selected }: CategoryBoxProps) {
       delete updatedQuery.category
     }
 
-    const url = qs.stringifyUrl(
-      {
-        url: "/listings",
-        query: updatedQuery,
-      },
-      { skipNull: true }
-    )
+    const queryString = new URLSearchParams(
+      Object.entries(updatedQuery).filter(([_, v]) => v != null) as [string, string][]
+    ).toString()
+    
+    const url = `/listings${queryString ? `?${queryString}` : ""}`
 
     router.push(url)
   }, [label, params, router])
