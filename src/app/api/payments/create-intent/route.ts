@@ -10,6 +10,13 @@ export async function POST(request: NextRequest) {
       return NextResponse.json({ error: "Unauthorized" }, { status: 401 })
     }
 
+    if (!stripe) {
+      return NextResponse.json(
+        { error: "Stripe is not configured" },
+        { status: 500 }
+      )
+    }
+
     const { amount, reservationId } = await request.json()
 
     const paymentIntent = await stripe.paymentIntents.create({

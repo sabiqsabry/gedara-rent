@@ -6,15 +6,21 @@ import { Button } from "@/components/ui/button"
 import { ListingReservation } from "@/components/listings/listing-reservation"
 
 async function getListing(slug: string) {
-  const res = await fetch(`${process.env.NEXT_PUBLIC_APP_URL || "http://localhost:3000"}/api/listings/${slug}`, {
-    cache: "no-store",
-  })
+  try {
+    const baseUrl = process.env.NEXT_PUBLIC_APP_URL || "http://localhost:3000"
+    const res = await fetch(`${baseUrl}/api/listings/${slug}`, {
+      cache: "no-store",
+    })
 
-  if (!res.ok) {
+    if (!res.ok) {
+      return null
+    }
+
+    return res.json()
+  } catch (error) {
+    console.error("Error fetching listing:", error)
     return null
   }
-
-  return res.json()
 }
 
 export default async function ListingDetailPage({
@@ -29,9 +35,9 @@ export default async function ListingDetailPage({
     notFound()
   }
 
-  const mainImage = listing.images[0]?.url || "/placeholder.jpg"
+  const mainImage = listing.images?.[0]?.url || "/placeholder.jpg"
   const avgRating = listing.avgRating || 0
-  const reviewCount = listing.reviews.length
+  const reviewCount = listing.reviews?.length || 0
 
   return (
     <div className="container mx-auto px-4 py-8">
@@ -88,7 +94,7 @@ export default async function ListingDetailPage({
           </div>
 
           {/* Amenities */}
-          {listing.amenities.length > 0 && (
+          {listing.amenities && listing.amenities.length > 0 && (
             <div className="border-b pb-8 mb-8">
               <h2 className="text-2xl font-semibold mb-4">What this place offers</h2>
               <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
@@ -103,7 +109,7 @@ export default async function ListingDetailPage({
           )}
 
           {/* Reviews */}
-          {listing.reviews.length > 0 && (
+          {listing.reviews && listing.reviews.length > 0 && (
             <div>
               <h2 className="text-2xl font-semibold mb-4">
                 Reviews ({reviewCount})
@@ -116,7 +122,9 @@ export default async function ListingDetailPage({
                       <div>
                         <p className="font-semibold">{review.author.name}</p>
                         <p className="text-sm text-gray-600">
-                          {new Date(review.createdAt).toLocaleDateString()}
+                          {review.createdAt
+                            ? new Date(review.createdAt).toLocaleDateString()
+                            : "Recently"}
                         </p>
                       </div>
                     </div>

@@ -53,8 +53,9 @@ export default function TripsPage() {
                   {reservation.listing.title}
                 </h3>
                 <p className="text-gray-600">
-                  {format(new Date(reservation.startDate), "MMM dd")} -{" "}
-                  {format(new Date(reservation.endDate), "MMM dd, yyyy")}
+                  {reservation.startDate && reservation.endDate
+                    ? `${format(new Date(reservation.startDate), "MMM dd")} - ${format(new Date(reservation.endDate), "MMM dd, yyyy")}`
+                    : "Dates not available"}
                 </p>
               </div>
               <span className="px-3 py-1 bg-primary/10 text-primary rounded-full text-sm">

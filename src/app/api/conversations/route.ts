@@ -72,13 +72,22 @@ export async function POST(request: NextRequest) {
     // Check if conversation already exists
     let conversation = await prisma.conversation.findFirst({
       where: {
-        participants: {
-          every: {
-            userId: {
-              in: [session.user.id, receiverId],
+        AND: [
+          {
+            participants: {
+              some: {
+                userId: session.user.id,
+              },
             },
           },
-        },
+          {
+            participants: {
+              some: {
+                userId: receiverId,
+              },
+            },
+          },
+        ],
       },
     })
 

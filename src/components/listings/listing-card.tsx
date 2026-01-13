@@ -26,12 +26,13 @@ export function ListingCard({ listing }: ListingCardProps) {
   return (
     <Link href={`/listings/${listing.slug}`}>
       <div className="group cursor-pointer">
-        <div className="relative w-full h-64 rounded-xl overflow-hidden">
+        <div className="relative w-full h-64 rounded-xl overflow-hidden bg-gray-200">
           <Image
             src={imageUrl}
             alt={listing.title}
             fill
             className="object-cover group-hover:scale-110 transition-transform duration-300"
+            unoptimized
           />
           <button
             onClick={(e) => {
