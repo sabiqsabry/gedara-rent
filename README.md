@@ -137,6 +137,23 @@ gedarent/
 
 See `.env.example` for all required environment variables.
 
+### Development Testing Features
+
+For testing purposes, the app includes development bypass features:
+
+1. **Authentication Bypass**: 
+   - Set `NEXT_PUBLIC_ENABLE_AUTH_BYPASS=true` in your `.env.local`
+   - A yellow "Skip Authentication" button will appear in the bottom-right corner
+   - This allows you to test features without logging in (dev mode only)
+
+2. **Payment Bypass**:
+   - Automatically enabled when auth bypass is enabled
+   - Appears on the booking/reservation widget
+   - Allows you to create reservations without actual Stripe payments
+   - Creates mock payment records for testing
+
+**Note**: These features only work in development mode and are automatically disabled in production.
+
 ## License
 
 This is a portfolio project for demonstration purposes.
