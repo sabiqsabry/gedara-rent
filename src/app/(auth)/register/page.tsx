@@ -1,6 +1,8 @@
 import { RegisterForm } from "@/components/forms/register-form"
 import Link from "next/link"
 
+export const dynamic = "force-dynamic"
+
 export default function RegisterPage() {
   return (
     <div>

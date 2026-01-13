@@ -2,6 +2,9 @@ import { SearchBar } from "@/components/search/search-bar"
 import { CategoriesGrid } from "@/components/shared/categories-grid"
 import Link from "next/link"
 import { Button } from "@/components/ui/button"
+import { Suspense } from "react"
+
+export const dynamic = "force-dynamic"
 
 export default function HomePage() {
   return (
@@ -17,7 +20,9 @@ export default function HomePage() {
             Discover unique places to stay in Sri Lanka and around the world
           </p>
           <div className="max-w-4xl mx-auto">
-            <SearchBar />
+            <Suspense fallback={<div className="h-16 bg-gray-200 rounded-lg animate-pulse" />}>
+              <SearchBar />
+            </Suspense>
           </div>
         </div>
       </div>
@@ -25,7 +30,13 @@ export default function HomePage() {
       {/* Categories */}
       <div className="container mx-auto px-4 py-16">
         <h2 className="text-3xl font-bold mb-8">Explore by category</h2>
-        <CategoriesGrid />
+        <Suspense fallback={<div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-6 gap-4">
+          {[...Array(6)].map((_, i) => (
+            <div key={i} className="h-24 bg-gray-200 rounded-lg animate-pulse" />
+          ))}
+        </div>}>
+          <CategoriesGrid />
+        </Suspense>
       </div>
 
       {/* CTA Section */}

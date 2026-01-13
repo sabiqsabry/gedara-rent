@@ -35,7 +35,7 @@ export function AmenitiesStep({ onNext, onBack }: AmenitiesStepProps) {
     }
     acc[amenity.category].push(amenity)
     return acc
-  }, {} as Record<string, typeof amenities>)
+  }, {} as Record<string, Array<typeof amenities[number]>>)
 
   return (
     <div>

@@ -85,7 +85,6 @@ export async function GET(request: NextRequest) {
             },
           },
         },
-        where: where,
         orderBy: {
           createdAt: "desc",
         },

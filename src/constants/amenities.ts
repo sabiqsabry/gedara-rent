@@ -9,15 +9,15 @@ import {
   MdKitchen, 
   MdLocalLaundryService, 
   MdPool,
-  MdWorkspaces
+  MdWorkspaces,
+  MdSmokeFree
 } from "react-icons/md"
 import { 
   TbAirConditioning,
   TbAlarm
 } from "react-icons/tb"
 import { 
-  GiHeatHaze,
-  GiSmokeGrenade
+  GiHeatHaze
 } from "react-icons/gi"
 import { 
   PiTelevision
@@ -104,7 +104,7 @@ export const amenities = [
   { 
     id: "smoke-alarm", 
     name: "Smoke Alarm", 
-    icon: GiSmokeGrenade, 
+    icon: MdSmokeFree, 
     category: "SAFETY" as const
   },
   { 

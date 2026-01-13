@@ -1,12 +1,12 @@
 "use client"
 
-import { useEffect, useState } from "react"
+import { useEffect, useState, Suspense } from "react"
 import { useSearchParams } from "next/navigation"
 import { ListingGrid } from "@/components/listings/listing-grid"
 import { Loader } from "@/components/shared/loader"
 import { Button } from "@/components/ui/button"
 
-export default function ListingsPage() {
+function ListingsContent() {
   const searchParams = useSearchParams()
   const [listings, setListings] = useState<any[]>([])
   const [loading, setLoading] = useState(true)
@@ -72,5 +72,17 @@ export default function ListingsPage() {
         </div>
       )}
     </div>
+  )
+}
+
+export default function ListingsPage() {
+  return (
+    <Suspense fallback={
+      <div className="container mx-auto px-4 py-12">
+        <Loader className="min-h-[400px]" />
+      </div>
+    }>
+      <ListingsContent />
+    </Suspense>
   )
 }

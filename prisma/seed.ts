@@ -70,7 +70,10 @@ async function main() {
     await prisma.amenity.upsert({
       where: { name: amenity.name },
       update: {},
-      create: amenity,
+      create: {
+        ...amenity,
+        category: amenity.category as any,
+      },
     })
   }
 
