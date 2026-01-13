@@ -1,6 +1,5 @@
 import { SearchBar } from "@/components/search/search-bar"
-import { categories } from "@/constants/categories"
-import { CategoryBox } from "@/components/shared/category-box"
+import { CategoriesGrid } from "@/components/shared/categories-grid"
 import Link from "next/link"
 import { Button } from "@/components/ui/button"
 
@@ -26,15 +25,7 @@ export default function HomePage() {
       {/* Categories */}
       <div className="container mx-auto px-4 py-16">
         <h2 className="text-3xl font-bold mb-8">Explore by category</h2>
-        <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-6 gap-4">
-          {categories.map((category) => (
-            <CategoryBox
-              key={category.value}
-              icon={category.icon}
-              label={category.label}
-            />
-          ))}
-        </div>
+        <CategoriesGrid />
       </div>
 
       {/* CTA Section */}
